@@ -77,6 +77,20 @@ class WP_Integration {
 		add_action("post_updated", array(&$this, 'update_post'));
 		//customize admin area
 		add_action("admin_init", array(&$this, 'admin_init'), 10000);
+
+		add_filter( 'category_description', array(&$this, 'category_description_filter') );
+		add_filter( 'get_the_archive_description', array(&$this, 'category_description_filter') );
+	}
+
+	public function category_description_filter($description, $categoryId) {
+
+		ob_start();
+
+		include pathinfo($this->_plugin_file_path, PATHINFO_DIRNAME)."/views/ecp_category_description.php";
+
+		$description = ob_get_clean();
+
+		return $description;
 	}
 
 	public function category_edit_form_fields($tag) {

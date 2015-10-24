@@ -4,7 +4,7 @@ Tags: categories, taxonomy, term, page, enhanced, custom post, custom post type,
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7K3XA4WQ2BUVJ&lc=US&item_name=Enhanced%20Category%20Wordpress%20Plugin&item_number=Support%20Open%20Source&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Requires at least: 3.0.1
 Tested up to: 4.2.2
-Stable tag: 1.0.2
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,18 +12,25 @@ Create custom enhanced pages for categories and any taxonomy term and manage the
 
 == Description ==
 
+**NEW** Version 2.0.0 brings great new feature: with some magic, if your theme displays category/term description, then it would be **automatically** enhanced.
+Are you ready for more? You can customize the template by creating a `content-ecp.php` file in your theme of choice. 
+
+
 Enhanced Category Pages allows you to create custom category and term pages by managing them using a special custom post type.
 
 **Features**
 
-* **NEW** Traverse categories using setup_ec_data that allows now category id as parameter
+* **NEW** Easy to use for everyone: users, designers, developers
+* **NEW** automatically show enhanced category/term content
+* **NEW** customize enhanced category/term content by creating a `content-ecp.php` file in your theme of choice
+* Traverse categories using setup_ec_data that allows now category id as parameter
 * Enhance any taxonomy: edit **any taxonomy** term as a custom post
-* edit category as a custom post - *Enhanced Category*
-* automatically generates *Enhanced Category* post type for each category
-* transparent synchronization of *Enhanced Category* and it's corresponding category
-* add any features available to WordPress custom posts
-* easy *Enhanced Category* display on category template using `<?php $GLOBALS['enhanced_category']->setup_ec_data(); ?>` (see install section)
-* internationalization ready
+* Edit category as a custom post - *Enhanced Category*
+* Automatically generates *Enhanced Category* post type for each category
+* Transparent synchronization of *Enhanced Category* and it's corresponding category
+* Add any features available to WordPress custom posts
+* Easy *Enhanced Category* display on category template using `<?php $GLOBALS['enhanced_category']->setup_ec_data(); ?>` (see install section)
+* Internationalization ready
 
 **Future Features**
 
@@ -36,51 +43,62 @@ Enhanced Category Pages allows you to create custom category and term pages by m
 2. Upload and uncompress it in "/wp-content/plugins/" directory.
 3. Activate the plugin through the "Plugins" menu in WordPress.
 4. Use "Enhanced Edit" link to edit the page of the respective category
+5. Category/term description display is automatically enhanced with your content.
+6. Optional: create `content-ecp.php` in your theme folder to customize the display.
 
-**Usage options**
+**Advanced usage options**
 
-1. Display category/term page. Edit **category/taxonomy template** to show the content of the "Enhanced Category":
-	
-	   
-	
-		//in category.php or taxonomy.php
-	    <?php
-	        global $enhanced_category;
-	        //get enhanced category post and set it up as global current post
-	        $enhanced_category->setup_ec_data();
-	    ?>
-	    <!-- enhanced category content -->
-	    <?php the_post_thumbnail("medium"); ?>
-	
-	    <?php get_template_part( 'content', 'page' ); ?>
-	
-	    <!-- custom fields -->
-	    <?php
-	        get_post_custom();
-	    ?>
-	
-	    <?php
-	        // If comments are open or we have at least one comment, load up the comment template
-	        if ( comments_open() || get_comments_number() ) :
-	            comments_template();
-	        endif;
-	    ?>
-	
+1. Create `content-ecp.php` in your theme folder to customize the display of the enhanced content. The custom post associated with category/term is set up, so all display functions for posts are usable.
+
+1. Display category/term page. Edit **category/taxonomy template** to show the content of the "Enhanced Category" (feel free to adjust to your needs):
+   
+   
+        //in category.php or taxonomy.php or any other place your theme displays the category/term content
+        <?php
+            global $enhanced_category;
+            //get enhanced category post and set it up as global current post
+            $enhanced_category->setup_ec_data();
+        ?>
+        <!-- enhanced category content -->
+        <?php the_post_thumbnail("medium"); ?>
+   
+        <?php get_template_part( 'content', 'page' ); ?>
+   
+        <!-- custom fields -->
+        <?php
+            get_post_custom();
+        ?>
+   
+        <?php
+            // If comments are open or we have at least one comment, load up the comment template
+            if ( comments_open() || get_comments_number() ) :
+                comments_template();
+            endif;
+        ?>
+   
 1. Display a list of categories:
 
-	
-		//$categories is presumed to be an already fetched array of categories/terms
-		foreach($categories as $category) {
-		    $GLOBALS['enhanced_category']->setup_ec_data($category->term_id);
-		    the_post_thumbnail('thumbnail');
-		}
-	 
+   
+        //$categories is presumed to be an already fetched array of categories/terms
+        foreach($categories as $category) {
+            $GLOBALS['enhanced_category']->setup_ec_data($category->term_id);
+            the_post_thumbnail('thumbnail');
+        }
+     
 
 == Frequently Asked Questions ==
 
+= How does magic happen? =
+
+*We use the `category_description` or `get_the_archive_description` filters in order to replace the plain content with the enhanced one.
+
+= How can I customize the output? =
+
+* `content-ecp.php` and `content-page.php` partial templates are looked for (in that order) and the first found is loaded.
+
 = What custom post type is created? =
 
-*Enhanced Category* (safe name: enhancedcategory) custom post type is created and a post is generated automatically for each category.
+*Enhanced Category* (safe name: enhancedcategory) custom post type is created and a post is generated automatically for each category/term.
 
 = What happens if I edit the category fields? =
 
@@ -126,6 +144,10 @@ foreach($categories as $category) {
 = 1.0.2 =
 * setup_ec_data allows now category id as parameter
 
+= 2.0.0 =
+* automatically show the enhanced content using `category_description` or `get_the_archive_description` filters
+* customize the display of content with `content-ecp.php` theme partial template
+
 
 == Upgrade Notice ==
 
@@ -140,3 +162,7 @@ foreach($categories as $category) {
 
 = 1.0.2 =
 * traverse categories using setup_ec_data that allows now category id as parameter
+
+= 2.0.0 =
+* This version adds magic: automatically show the enhanced content using `category_description` or `get_the_archive_description` filters.
+
