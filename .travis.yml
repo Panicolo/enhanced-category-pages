@@ -1,0 +1,29 @@
+# whitelist branch dev
+branches:
+  only:
+    - dev
+
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
+  - nightly
+
+before_script:
+  - sudo apt-get install ruby
+  - gem install nyx
+
+script:
+  - nyx version
+  - nyx check:php .
+
+notifications:
+  email:
+    recipients:
+    - ciprian.amariei@gmail.com
+    on_failure: always
+
