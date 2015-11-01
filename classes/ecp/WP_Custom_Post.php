@@ -9,7 +9,7 @@ abstract class WP_Custom_Post {
 	protected $_translation_domain;
 	public $id;
 
-	private $meta;
+	//private $meta;
 
 	public function __construct($register_options = array(), $translation_domain = "") {
 
@@ -49,7 +49,8 @@ abstract class WP_Custom_Post {
 	public function updated_messages($messages) {
 		global $post, $post_ID;
 		$_uname = ucfirst($this->_name);
-		$_uname_plural = ucfirst($this->_name_plural);
+		$revision = isset($_GET['revision']) ? (int) isset($_GET['revision']) : 0;
+		//$_uname_plural = ucfirst($this->_name_plural);
 
 		$messages[$this->get_safe_name()] = array(
 			0 => '', // Unused. Messages start at index 1.
@@ -57,7 +58,7 @@ abstract class WP_Custom_Post {
 			2 => __('Custom field updated.'),
 			3 => __('Custom field deleted.'),
 			4 => $this->translate('Successfully updated', $_uname),
-			5 => isset($_GET['revision']) ? $this->translate('Restored to revision from %s', $_uname, wp_post_revision_title((int) $_GET['revision'], false)) : false,
+			5 => $revision ? $this->translate('Restored to revision from %s', $_uname, wp_post_revision_title($revision, false)) : false,
 			6 => $this->translate('Published. <a href="%s">View</a>', $_uname, esc_url(get_permalink($post_ID)), $this->_name),
 			7 => $this->translate('Saved.', $_uname),
 			8 => $this->translate('Submitted. <a target="_blank" href="%s">Preview</a>', $_uname, esc_url(add_query_arg('preview', 'true', get_permalink($post_ID))), $this->_name),
@@ -74,12 +75,14 @@ abstract class WP_Custom_Post {
 
 	//translates all parameters and then they are sprintf-ed in the first parameter
 	protected function translate($str1) {
+		$str1;
 		$translation = '';
 
 		$args = func_get_args();
 
 		//translate each string received as argument
 		array_walk($args, function (&$str, $index, $translation_domain) {
+			$index;
 			$str = __($str, $translation_domain);
 		}, $this->_translation_domain);
 

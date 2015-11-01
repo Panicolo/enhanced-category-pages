@@ -80,9 +80,16 @@ class WP_Integration {
 
 		add_filter( 'category_description', array(&$this, 'category_description_filter') );
 		add_filter( 'get_the_archive_description', array(&$this, 'category_description_filter') );
+
+		add_action("woocommerce_archive_description", array(&$this, 'on_woocommerce_archive_description'), 10000);
 	}
 
-	public function category_description_filter($description, $categoryId) {
+	public function on_woocommerce_archive_description() {
+		echo $this->category_description_filter("");
+	}
+
+	public function category_description_filter($description, $categoryId = null) {
+		$categoryId;
 
 		ob_start();
 
@@ -143,11 +150,11 @@ STR;
 			$category = $this->_enhanced_category->get_by_post($post_id);
 			$taxonomy = get_taxonomy($category->taxonomy);
 
-			$a = '<a class="add-new-h2 back-to-categories" href="'
+			$anchor = '<a class="add-new-h2 back-to-categories" href="'
 				. esc_url(admin_url("edit-tags.php?taxonomy={$category->taxonomy}")) . '">'
 				. __("Back to {$taxonomy->labels->name}", $this->_translation_domain) . "</a>";
 
-			echo '<input type="hidden" id="enhanced_category_list_edit_url" value="' . htmlentities($a) . '" />';
+			echo '<input type="hidden" id="enhanced_category_list_edit_url" value="' . htmlentities($anchor) . '" />';
 
 			echo '<input type="hidden" id="taxonomy_single_name" value="' . htmlentities($taxonomy->labels->singular_name) . '" />';
 
@@ -214,7 +221,7 @@ STR;
 	}
 
 	public function add_category($term_id, $tt_id, $taxonomy) {
-
+		$tt_id;
 		$term = get_term($term_id, $taxonomy);
 
 		return $this->_enhanced_category->add_new_from_category($term);
@@ -225,6 +232,7 @@ STR;
 	}
 
 	public function update_category($category_id, $tt_id, $taxonomy) {
+		$tt_id;
 		$cat = get_term($category_id, $taxonomy);
 
 		//always update title and slug using the category
@@ -250,6 +258,7 @@ STR;
 	}
 
 	private function is_valid_taxonomy($taxonomy_name) {
+		$taxonomy_name;
 		//always true for the moment
 		//TODO: should check the user settings
 		return true;

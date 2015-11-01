@@ -9,11 +9,11 @@ class Enhanced_Category extends WP_Custom_Post {
 	private $_table_categories_posts;
 	private $_cp_proprieties;
 
-	public function __construct($translation_domain, $table_categories_posts) {
+	public function __construct($translation_domain, $table_categs_posts) {
 		$this->_name = 'Enhanced Category';
 		$this->_name_plural = 'Enhanced Categories';
 		$this->_prevent_update = false;
-		$this->_table_categories_posts = $table_categories_posts;
+		$this->_table_categories_posts = $table_categs_posts;
 
 		$this->_cp_proprieties = array(
 			'_builtin' => false, // It's a custom post type, not built in
@@ -163,9 +163,11 @@ class Enhanced_Category extends WP_Custom_Post {
 			//if the post does not already exist, we create it
 			$cat = get_term($category_id, $taxonomy);
 			$post_id = $this->add_new_from_category($cat);
-		} else {
-			$post_id = $posts_array[0]->ID;
+
+			return $post_id;
 		}
+
+		$post_id = $posts_array[0]->ID;
 
 		return $post_id;
 	}

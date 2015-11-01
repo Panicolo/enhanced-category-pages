@@ -3,8 +3,8 @@ Contributors: cip, dioneea
 Tags: categories, taxonomy, term, page, enhanced, custom post, custom post type, category, featured image
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7K3XA4WQ2BUVJ&lc=US&item_name=Enhanced%20Category%20Wordpress%20Plugin&item_number=Support%20Open%20Source&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Requires at least: 3.0.1
-Tested up to: 4.2.2
-Stable tag: 2.0.0
+Tested up to: 4.3.1
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,17 +12,18 @@ Create custom enhanced pages for categories and any taxonomy term and manage the
 
 == Description ==
 
-**NEW** Version 2.0.0 brings great new feature: with some magic, if your theme displays category/term description, then it would be **automatically** enhanced.
-Are you ready for more? You can customize the template by creating a `content-ecp.php` file in your theme of choice. 
+**NEW** Version 2.0.0 brings a great new feature: with some magic, if your theme displays category/term description, then it would be **automatically** enhanced.
+Are you ready for more? You can customize the template by creating a `content-ecp.php` file in your theme of choice.
 
 
 Enhanced Category Pages allows you to create custom category and term pages by managing them using a special custom post type.
 
 **Features**
 
-* **NEW** Easy to use for everyone: users, designers, developers
-* **NEW** automatically show enhanced category/term content
-* **NEW** customize enhanced category/term content by creating a `content-ecp.php` file in your theme of choice
+* **NEW** WooCommerce compatible - product categories can be enhanced now
+* Easy to use for everyone: users, designers, developers
+* Automatically show enhanced category/term content
+* Customize enhanced category/term content by creating a `content-ecp.php` file in your theme of choice
 * Traverse categories using setup_ec_data that allows now category id as parameter
 * Enhance any taxonomy: edit **any taxonomy** term as a custom post
 * Edit category as a custom post - *Enhanced Category*
@@ -51,8 +52,8 @@ Enhanced Category Pages allows you to create custom category and term pages by m
 1. Create `content-ecp.php` in your theme folder to customize the display of the enhanced content. The custom post associated with category/term is set up, so all display functions for posts are usable.
 
 1. Display category/term page. Edit **category/taxonomy template** to show the content of the "Enhanced Category" (feel free to adjust to your needs):
-   
-   
+
+
         //in category.php or taxonomy.php or any other place your theme displays the category/term content
         <?php
             global $enhanced_category;
@@ -61,30 +62,30 @@ Enhanced Category Pages allows you to create custom category and term pages by m
         ?>
         <!-- enhanced category content -->
         <?php the_post_thumbnail("medium"); ?>
-   
+
         <?php get_template_part( 'content', 'page' ); ?>
-   
+
         <!-- custom fields -->
         <?php
             get_post_custom();
         ?>
-   
+
         <?php
             // If comments are open or we have at least one comment, load up the comment template
             if ( comments_open() || get_comments_number() ) :
                 comments_template();
             endif;
         ?>
-   
+
 1. Display a list of categories:
 
-   
+
         //$categories is presumed to be an already fetched array of categories/terms
         foreach($categories as $category) {
             $GLOBALS['enhanced_category']->setup_ec_data($category->term_id);
             the_post_thumbnail('thumbnail');
         }
-     
+
 
 == Frequently Asked Questions ==
 
@@ -148,6 +149,15 @@ foreach($categories as $category) {
 * automatically show the enhanced content using `category_description` or `get_the_archive_description` filters
 * customize the display of content with `content-ecp.php` theme partial template
 
+= 2.0.1 =
+* bug-fix - prevent undesired PHP warning on category_description filter
+* check and update 4.3.1 compatibility
+
+= 2.1.0 =
+* WooCommerce product category can be enhanced now
+
+= 2.1.1 =
+* Improve code quality
 
 == Upgrade Notice ==
 
@@ -166,3 +176,11 @@ foreach($categories as $category) {
 = 2.0.0 =
 * This version adds magic: automatically show the enhanced content using `category_description` or `get_the_archive_description` filters.
 
+= 2.0.1 =
+* Bug fixing: prevent undesired PHP warning on category_description filter and update compatibility up to WordPress 4.3.1
+
+= 2.1.0 =
+* New feature: WooCommerce product category can be enhanced now
+
+= 2.1.1 =
+* Improve code quality
