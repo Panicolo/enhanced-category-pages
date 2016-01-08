@@ -19,7 +19,9 @@ class Enhanced_Category extends WP_Custom_Post {
 			'_builtin' => false, // It's a custom post type, not built in
 			'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields', 'comments'),
 			'public' => false,
-			'show_ui' => false, // UI in admin panel
+			'show_ui'           => true,
+			'show_in_menu'      => false,
+			'show_in_nav_menus' => false,
 		);
 
 		parent::__construct($this->_cp_proprieties, $translation_domain);
@@ -219,13 +221,10 @@ class Enhanced_Category extends WP_Custom_Post {
 
 		if (empty($cur_cat_id)) {
 			//get global category/term id
-			$query_var = get_query_var("taxonomy");
+			$current_term = get_queried_object();
 
-			if ( empty($query_var) ) {
-				$cur_cat_id	= get_cat_id(single_cat_title("", false));
-			} else {
-				$term = get_term_by('slug', get_query_var("term"), $query_var);
-				$cur_cat_id = $term->term_id;
+			if ($current_term) {
+				$cur_cat_id = $current_term->term_id;
 			}
 		}
 
