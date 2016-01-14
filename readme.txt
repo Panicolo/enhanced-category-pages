@@ -4,7 +4,7 @@ Tags: categories, taxonomy, term, page, enhanced, custom post, custom post type,
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7K3XA4WQ2BUVJ&lc=US&item_name=Enhanced%20Category%20Wordpress%20Plugin&item_number=Support%20Open%20Source&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Requires at least: 3.0.1
 Tested up to: 4.4
-Stable tag: 2.1.3
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -167,6 +167,9 @@ foreach($categories as $category) {
 = 2.1.3 =
 * Bug fix: correctly handle categories with apostrophes
 
+= 2.2.0 =
+* All in One SEO Pack plugin compatibility added
+
 == Upgrade Notice ==
 
 = 0.2 =
@@ -198,3 +201,6 @@ foreach($categories as $category) {
 
 = 2.1.3 =
 * Bug fix: correctly handle categories with apostrophes
+
+= 2.2.0 =
+* All in One SEO Pack plugin compatibility added

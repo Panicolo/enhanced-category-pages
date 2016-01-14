@@ -10,12 +10,14 @@ class WP_Integration {
 	private $_after_init_callback;
 	private $_plugin_file_path;
 	private $_table_name;
+	private $_goodNeighbour;
 
 	private function __construct($plugin_url, $plugin_directory_name, $plugin_file_path) {
 		$this->_plugin_url = $plugin_url;
 		$this->_translation_domain = $plugin_directory_name;
 		$this->_plugin_file_path = $plugin_file_path;
 		$this->_table_name = "ecp_x_category";
+		$this->_goodNeighbour = new WP_GoodNeighbour();
 	}
 
 	public static function getInstance($plugin_url, $plugin_directory_name, $plugin_file_path) {
@@ -78,8 +80,8 @@ class WP_Integration {
 		//customize admin area
 		add_action("admin_init", array(&$this, 'admin_init'), 10000);
 
-		add_filter( 'category_description', array(&$this, 'category_description_filter') );
-		add_filter( 'get_the_archive_description', array(&$this, 'category_description_filter') );
+		add_filter( 'category_description', array(&$this, 'category_description_filter'), 1 );
+		add_filter( 'get_the_archive_description', array(&$this, 'category_description_filter'), 10 );
 
 		add_action("woocommerce_archive_description", array(&$this, 'on_woocommerce_archive_description'), 10000);
 	}
@@ -90,6 +92,11 @@ class WP_Integration {
 
 	public function category_description_filter($description, $categoryId = null) {
 		$categoryId;
+
+		//play nice with All_in_One_SEO_Pack as we cannot use ob_start because of it
+		if ( $this->_goodNeighbour->isCallFrom_All_in_One_SEO_Pack() ) {
+			return $description;
+		}
 
 		ob_start();
 
