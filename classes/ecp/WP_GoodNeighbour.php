@@ -3,6 +3,7 @@
 namespace ecp;
 
 defined( 'ABSPATH' ) OR exit;
+error_reporting(E_ALL);
 
 class WP_GoodNeighbour {
 
@@ -21,7 +22,7 @@ class WP_GoodNeighbour {
 
 	protected function foundInBackTrace($searchFor, $backTrace, $field) {
 		foreach ($backTrace as $call) {
-			if ( $call[$field] == $searchFor ) {
+			if ( !empty($call[$field]) && $call[$field] == $searchFor ) {
 				return true;
 			}
 		}
