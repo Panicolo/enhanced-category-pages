@@ -57,11 +57,11 @@ class WP_Integration {
 		dbDelta($sql);
 
 		$role = get_role( 'administrator' );
-    	$role->add_cap( 'vc_access_rules_post_types/enhancedcategory' ); 
+    	$role->add_cap( 'vc_access_rules_post_types/enhancedcategory' );
 		$role = get_role( 'editor' );
-    	$role->add_cap( 'vc_access_rules_post_types/enhancedcategory' ); 
+    	$role->add_cap( 'vc_access_rules_post_types/enhancedcategory' );
 		$role = get_role( 'author' );
-    	$role->add_cap( 'vc_access_rules_post_types/enhancedcategory' ); 
+    	$role->add_cap( 'vc_access_rules_post_types/enhancedcategory' );
 	}
 
 	public function load_translations() {
@@ -99,6 +99,7 @@ class WP_Integration {
 
 	public function category_description_filter($description, $categoryId = null) {
 		$classes = get_body_class();
+
 		if (!in_array('date',$classes) && !in_array('post-type-archive',$classes)) {
 			$categoryId;
 
@@ -115,9 +116,9 @@ class WP_Integration {
 			$description = ob_get_clean();
 
 			return $description;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	public function category_edit_form_fields($tag) {
