@@ -55,35 +55,35 @@ Enhanced Category Pages allows you to create custom category and term pages by m
 
 1. Create `content-ecp.php` in your theme folder to customize the display of the enhanced content. The custom post associated with category/term is set up, so all display functions for posts are usable.
 
-`
-<?php
-	global $enhanced_category;
-	// if not previously set up, then let setup_ec_data get the current query term/category
-	if (empty($categoryId)) {
-		$categoryId = null;
-	}
 
-	// get enhanced category post and set it up as global current post
-	$enhanced_category->setup_ec_data($categoryId);
-?>
+		<?php
+			global $enhanced_category;
+			// if not previously set up, then let setup_ec_data get the current query term/category
+			if (empty($categoryId)) {
+				$categoryId = null;
+			}
 
-<!-- enchanced category page (ECP) content -->
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+			// get enhanced category post and set it up as global current post
+			$enhanced_category->setup_ec_data($categoryId);
+		?>
 
-	<div class="post-thumbnail">
-		<?php the_post_thumbnail(); ?>
-	</div>
+		<!-- enchanced category page (ECP) content -->
+		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-	<div class="entry-content">
-		<?php the_content(); ?>
-	</div><!-- .entry-content -->
+			<div class="post-thumbnail">
+				<?php the_post_thumbnail(); ?>
+			</div>
 
-	<?php edit_post_link( __( 'Edit'), '<footer class="entry-footer"><span class="edit-link">', '</span></footer><!-- .entry-footer -->' ); ?>
+			<div class="entry-content">
+				<?php the_content(); ?>
+			</div><!-- .entry-content -->
 
-</article><!-- #post-## -->
-`
+			<?php edit_post_link( __( 'Edit'), '<footer class="entry-footer"><span class="edit-link">', '</span></footer><!-- .entry-footer -->' ); ?>
 
-2. Display category/term page. Edit **category/taxonomy template** to show the content of the "Enhanced Category" (feel free to adjust to your needs):
+		</article><!-- #post-## -->
+
+
+1. Display category/term page. Edit **category/taxonomy template** to show the content of the "Enhanced Category" (feel free to adjust to your needs):
 
 
         //in category.php or taxonomy.php or any other place your theme displays the category/term content
@@ -109,7 +109,7 @@ Enhanced Category Pages allows you to create custom category and term pages by m
             endif;
         ?>
 
-3. Display a list of categories:
+1. Display a list of categories:
 
 
         //$categories is presumed to be an already fetched array of categories/terms
@@ -123,7 +123,7 @@ Enhanced Category Pages allows you to create custom category and term pages by m
 
 = How does magic happen? =
 
-*We use the `category_description` or `get_the_archive_description` filters in order to replace the plain content with the enhanced one.
+We use the `category_description` or `get_the_archive_description` filters in order to replace the plain content with the enhanced one.
 
 = How can I customize the output? =
 
@@ -144,15 +144,15 @@ Enhanced Category Pages allows you to create custom category and term pages by m
 = Can I use it to list any categories/terms? =
 
 Yes, you can pass the category/term id to `setup_ec_data` method like this (`$categories` is presumed to be an already fetched array of categories/terms):
-`
-foreach($categories as $category) {
-    $GLOBALS['enhanced_category']->setup_ec_data($category->term_id);
-    the_post_thumbnail('thumbnail');
-}
-`
+		`
+		foreach($categories as $category) {
+		    $GLOBALS['enhanced_category']->setup_ec_data($category->term_id);
+		    the_post_thumbnail('thumbnail');
+		}
+		`
 = Why do I get a blank screen after installing the plugin? =
 
-*Enhanced Category* Post (ECP) requires at least PHP 5.3 running on your server. Contact your hosting to update the PHP version.
+*Enhanced Category Post* (ECP) requires at least PHP 5.3 running on your server. Contact your hosting to update the PHP version.
 
 
 
