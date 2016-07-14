@@ -1,10 +1,10 @@
 === Enhanced Category Pages ===
-Contributors: cip, dioneea
+Contributors: cip, dioneea, danaila_iulian
 Tags: categories, taxonomy, term, page, enhanced, custom post, custom post type, category, featured image
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=7K3XA4WQ2BUVJ&lc=US&item_name=Enhanced%20Category%20Wordpress%20Plugin&item_number=Support%20Open%20Source&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
 Requires at least: 3.0.1
-Tested up to: 4.4
-Stable tag: 2.2.1
+Tested up to: 4.5.3
+Stable tag: 2.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,9 @@ Enhanced Category Pages allows you to create custom category and term pages by m
 
 **Features**
 
-* **NEW** WooCommerce compatible - product categories can be enhanced now
+* **NEW** Visual Composer compatible - you can now edit the category using Visual Composer
+* **NEW** Genesis Framework compatible
+* WooCommerce compatible - product categories can be enhanced now
 * Easy to use for everyone: users, designers, developers
 * Automatically show enhanced category/term content
 * Customize enhanced category/term content by creating a `content-ecp.php` file in your theme of choice
@@ -53,7 +55,35 @@ Enhanced Category Pages allows you to create custom category and term pages by m
 
 1. Create `content-ecp.php` in your theme folder to customize the display of the enhanced content. The custom post associated with category/term is set up, so all display functions for posts are usable.
 
-1. Display category/term page. Edit **category/taxonomy template** to show the content of the "Enhanced Category" (feel free to adjust to your needs):
+`
+<?php
+	global $enhanced_category;
+	// if not previously set up, then let setup_ec_data get the current query term/category
+	if (empty($categoryId)) {
+		$categoryId = null;
+	}
+
+	// get enhanced category post and set it up as global current post
+	$enhanced_category->setup_ec_data($categoryId);
+?>
+
+<!-- enchanced category page (ECP) content -->
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+
+	<div class="post-thumbnail">
+		<?php the_post_thumbnail(); ?>
+	</div>
+
+	<div class="entry-content">
+		<?php the_content(); ?>
+	</div><!-- .entry-content -->
+
+	<?php edit_post_link( __( 'Edit'), '<footer class="entry-footer"><span class="edit-link">', '</span></footer><!-- .entry-footer -->' ); ?>
+
+</article><!-- #post-## -->
+`
+
+2. Display category/term page. Edit **category/taxonomy template** to show the content of the "Enhanced Category" (feel free to adjust to your needs):
 
 
         //in category.php or taxonomy.php or any other place your theme displays the category/term content
@@ -79,7 +109,7 @@ Enhanced Category Pages allows you to create custom category and term pages by m
             endif;
         ?>
 
-1. Display a list of categories:
+3. Display a list of categories:
 
 
         //$categories is presumed to be an already fetched array of categories/terms
@@ -120,7 +150,9 @@ foreach($categories as $category) {
     the_post_thumbnail('thumbnail');
 }
 `
+= Why do I get a blank screen after installing the plugin? =
 
+*Enhanced Category* Post (ECP) requires at least PHP 5.3 running on your server. Contact your hosting to update the PHP version.
 
 
 
@@ -171,7 +203,13 @@ foreach($categories as $category) {
 * All in One SEO Pack plugin compatibility added
 
 = 2.2.1 =
-* Minor bug fix: prvent PHP notice
+* Minor bug fix: prevent PHP notice
+
+= 2.3.0 =
+* Add Visual Composer compatibility
+* Add Genesis Framework compatibility
+* Bug fix: Woocommerce shop page does not display the description of the first product anymore
+* Bug fix: archive pages were showing the content of the first item
 
 == Upgrade Notice ==
 
@@ -209,4 +247,10 @@ foreach($categories as $category) {
 * All in One SEO Pack plugin compatibility added
 
 = 2.2.1 =
-* Minor bug fix: prvent PHP notice
+* Minor bug fix: prevent PHP notice
+
+= 2.3.0 =
+* Add Visual Composer compatibility
+* Add Genesis Framework compatibility
+* Bug fix: Woocommerce shop page does not display the description of the first product anymore
+* Bug fix: archive pages were showing the content of the first item

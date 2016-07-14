@@ -55,6 +55,13 @@ class WP_Integration {
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta($sql);
+
+		$role = get_role( 'administrator' );
+    	$role->add_cap( 'vc_access_rules_post_types/enhancedcategory' ); 
+		$role = get_role( 'editor' );
+    	$role->add_cap( 'vc_access_rules_post_types/enhancedcategory' ); 
+		$role = get_role( 'author' );
+    	$role->add_cap( 'vc_access_rules_post_types/enhancedcategory' ); 
 	}
 
 	public function load_translations() {
@@ -82,8 +89,8 @@ class WP_Integration {
 
 		add_filter( 'category_description', array(&$this, 'category_description_filter'), 1 );
 		add_filter( 'get_the_archive_description', array(&$this, 'category_description_filter'), 10 );
-
-		add_action("woocommerce_archive_description", array(&$this, 'on_woocommerce_archive_description'), 10000);
+		add_action( 'woocommerce_archive_description' , array(&$this, 'on_woocommerce_archive_description'), 10000);
+		add_filter( 'genesis_term_intro_text_output', array(&$this, 'category_description_filter'), 10 );
 	}
 
 	public function on_woocommerce_archive_description() {
@@ -91,20 +98,26 @@ class WP_Integration {
 	}
 
 	public function category_description_filter($description, $categoryId = null) {
-		$categoryId;
+		$classes = get_body_class();
+		if (!in_array('date',$classes) && !in_array('post-type-archive',$classes)) {
+			$categoryId;
 
-		//play nice with All_in_One_SEO_Pack as we cannot use ob_start because of it
-		if ( $this->_goodNeighbour->isCallFrom_All_in_One_SEO_Pack() ) {
+
+			//play nice with All_in_One_SEO_Pack as we cannot use ob_start because of it
+			if ( $this->_goodNeighbour->isCallFrom_All_in_One_SEO_Pack() ) {
+				return $description;
+			}
+
+			ob_start();
+
+			include pathinfo($this->_plugin_file_path, PATHINFO_DIRNAME)."/views/ecp_category_description.php";
+
+			$description = ob_get_clean();
+
 			return $description;
+		} else {
+			return false;
 		}
-
-		ob_start();
-
-		include pathinfo($this->_plugin_file_path, PATHINFO_DIRNAME)."/views/ecp_category_description.php";
-
-		$description = ob_get_clean();
-
-		return $description;
 	}
 
 	public function category_edit_form_fields($tag) {
